@@ -1,10 +1,14 @@
 package lv.lu.eztf.dn.combopt.evrp;
 
+import ai.timefold.solver.core.api.score.analysis.ScoreAnalysis;
+import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
+import ai.timefold.solver.core.api.solver.SolutionManager;
 import ai.timefold.solver.core.api.solver.Solver;
 import ai.timefold.solver.core.api.solver.SolverFactory;
 import ai.timefold.solver.core.config.solver.SolverConfig;
 import lombok.extern.slf4j.Slf4j;
 import lv.lu.eztf.dn.combopt.evrp.domain.*;
+import lv.lu.eztf.dn.combopt.evrp.solver.ConstraintStreamCostFunction;
 import lv.lu.eztf.dn.combopt.evrp.solver.EasyCostFunction;
 import lv.lu.eztf.dn.combopt.evrp.solver.EasyJustDistanceCostFunction;
 
@@ -21,12 +25,17 @@ public class EVRPapp {
                 new SolverConfig()
                         .withSolutionClass(EVRPsolution.class)
                         .withEntityClasses(Vehicle.class)
-                        .withEasyScoreCalculatorClass(EasyCostFunction.class)
+                        //.withEasyScoreCalculatorClass(EasyJustDistanceCostFunction.class)
+                        .withConstraintProviderClass(ConstraintStreamCostFunction.class)
                         .withTerminationSpentLimit(Duration.ofSeconds(5)));
         Solver<EVRPsolution> solver = solverFactory.buildSolver();
         EVRPsolution solution = solver.solve(problem);
 
         printExample(solution);
+
+        SolutionManager<EVRPsolution, HardSoftScore> solutionManager = SolutionManager.create(solverFactory);
+        log.info(solutionManager.explain(solution).getSummary());
+
     }
 
     private static EVRPsolution createExample() {
@@ -39,7 +48,7 @@ public class EVRPapp {
         Location depot = new Location(0l, 0.0, 0.0);
         vehicle.setDepot(depot);
 
-        vehicle.setCharge(7.0);
+        vehicle.setCharge(4.0);
         vehicle.setCostHourly(7.0);
         vehicle.setCostUsage(30.0);
         vehicle.setDischargeSpeed(1.0);
@@ -52,7 +61,7 @@ public class EVRPapp {
         vehicle.setServiceDurationAtStart(60 * 5l);
 
         Customer customer1 = new Customer();
-        customer1.setName("Customer 1");
+        customer1.setName("Customer RIGHT BOTTTOM");
         Location loc1 = new Location(1l, 4.0, 0.0);
         customer1.setLocation(loc1);
         customer1.setServiceDuration(60 * 15l);
@@ -60,7 +69,7 @@ public class EVRPapp {
         customer1.setEndTime(3600 * 8l);
 
         Customer customer2 = new Customer();
-        customer2.setName("Customer 2");
+        customer2.setName("Customer RIGHT UPPER");
         Location loc2 = new Location(2l, 4.0, 3.0);
         customer2.setLocation(loc2);
         customer2.setServiceDuration(60 * 15l);
@@ -68,7 +77,7 @@ public class EVRPapp {
         customer2.setEndTime(3600 * 8l);
 
         Customer customer3 = new Customer();
-        customer3.setName("Customer 3");
+        customer3.setName("Customer LEFT UPPER");
         Location loc3 = new Location(3l, 0.0, 3.0);
         customer3.setLocation(loc3);
         customer3.setServiceDuration(60 * 15l);

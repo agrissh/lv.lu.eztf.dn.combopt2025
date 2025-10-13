@@ -54,6 +54,13 @@
             <artifactId>lombok</artifactId>
             <version>1.18.42</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -63,7 +70,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.5.1</version>
                 <configuration>
-                    <mainClass>org.acme.schooltimetabling.TimetableApp</mainClass>
+                    <mainClass>lv.lu.eztf.dn.combopt.evrp.EVRPapp</mainClass>
                 </configuration>
             </plugin>
         </plugins>

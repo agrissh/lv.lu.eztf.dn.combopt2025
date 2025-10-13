@@ -41,4 +41,20 @@ public class Vehicle {
                 prevLoc.distanceTo(this.getDepot());
         return totalDistance;
     }
+
+    public Boolean isBatteryEmpty() {
+        Boolean batteryEmpty = false;
+        Double charge = this.getCharge();
+        Location prevLoc = this.getDepot();
+        for (Visit visit: this.getVisits()) {
+            charge = charge - this.getDischargeSpeed() * prevLoc.distanceTo(visit.getLocation());
+            if (charge < 0) { batteryEmpty = true; }
+            if (visit instanceof ChargingStation) {charge = this.getMaxCharge(); }
+            prevLoc = visit.getLocation();
+        }
+        charge = charge - this.getDischargeSpeed() * prevLoc.distanceTo(this.getDepot());
+        if (charge < 0) { batteryEmpty = true; }
+        return batteryEmpty;
+
+    }
 }
