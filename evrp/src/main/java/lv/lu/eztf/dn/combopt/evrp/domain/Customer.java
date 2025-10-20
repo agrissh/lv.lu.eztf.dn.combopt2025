@@ -16,8 +16,9 @@ public class Customer extends Visit {
                     Visit previous,
                     Visit next,
                     Long arrivalTime,
+                    Double vehicleCharge,
                     Long serviceDuration) {
-        super(location, startTime, endTime, name, vehicle, previous, next, arrivalTime);
+        super(location, startTime, endTime, name, vehicle, previous, next, arrivalTime, vehicleCharge);
         this.serviceDuration = serviceDuration;
     }
 
@@ -25,4 +26,7 @@ public class Customer extends Visit {
     public Long getVisitTime() {
         return this.getServiceDuration();
     }
+
+    @Override
+    public Double getVehicleChargeAfterVisit() { return this.getVehicleCharge(); }
 }

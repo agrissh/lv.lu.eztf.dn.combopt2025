@@ -65,7 +65,7 @@ public class EVRPapp {
         vehicle.setServiceDurationAtFinish(60 * 10l);
         vehicle.setServiceDurationAtStart(60 * 5l);
 
-        vehicle2.setCharge(7.0);
+        vehicle2.setCharge(6.0);
         vehicle2.setCostHourly(7.0);
         vehicle2.setCostUsage(30.0);
         vehicle2.setDischargeSpeed(1.0);
@@ -140,31 +140,27 @@ public class EVRPapp {
         log.info("Printing EVRP solution %s with score %s."
                 .formatted(solution.getName(), solution.getScore().toString()));
         for (Vehicle vehicle : solution.getVehicleList()) {
-            Double charge = vehicle.getCharge();
-            log.info("Vehicle %s with charge %f departing at %d :"
+            log.info("Vehicle %s with charge %.2f departing at %d :"
                     .formatted(vehicle.getRegNr(), vehicle.getCharge(),
                             vehicle.getOperationStartingTime()  + vehicle.getServiceDurationAtStart()));
-            Location prevLoc = vehicle.getDepot();
             for (Visit visit : vehicle.getVisits()) {
-                charge = charge - vehicle.getDischargeSpeed() * prevLoc.distanceTo(visit.getLocation());
                 log.info("Visited %s %s located in (%.2f, %.2f), remaining charge %.2f, arrived at %d, departure at %d"
                         .formatted(
                                 visit instanceof Customer ? "customer" : "charging station",
                                 visit.getName(),
                                 visit.getLocation().getLon(), visit.getLocation().getLat(),
-                                charge,
+                                visit.getVehicleCharge(),
                                 visit.getArrivalTime(),
                                 visit.getDepartureTime()));
                 if (visit instanceof ChargingStation) {
-                    charge = vehicle.getMaxCharge();
-                    log.info("Charged! Full charge %f"
-                            .formatted(charge));
+                    log.info("Charged! Full charge %.2f"
+                            .formatted(visit.getVehicleChargeAfterVisit()));
                 }
-                prevLoc = visit.getLocation();
             }
-            charge = charge - vehicle.getDischargeSpeed() * prevLoc.distanceTo(vehicle.getDepot());
-            log.info("Charge when finished in depot %f"
-                    .formatted(charge));
+            log.info("Charge when finished in depot %.2f"
+                    .formatted(vehicle.getLast() != null ? vehicle.getLast().getVehicleChargeAfterVisit() - vehicle.getDischargeSpeed() *
+                            vehicle.getLast().getLocation().distanceTo(vehicle.getDepot()) :
+                            vehicle.getCharge()));
         }
         log.info("===================================================");
 

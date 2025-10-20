@@ -1,10 +1,7 @@
 package lv.lu.eztf.dn.combopt.evrp.domain;
 
 import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
-import ai.timefold.solver.core.api.domain.variable.CascadingUpdateShadowVariable;
-import ai.timefold.solver.core.api.domain.variable.InverseRelationShadowVariable;
-import ai.timefold.solver.core.api.domain.variable.NextElementShadowVariable;
-import ai.timefold.solver.core.api.domain.variable.PreviousElementShadowVariable;
+import ai.timefold.solver.core.api.domain.variable.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,11 +23,14 @@ public abstract class  Visit {
     @NextElementShadowVariable(sourceVariableName = "visits")
     Visit next;
     public abstract Long getVisitTime();
-    @CascadingUpdateShadowVariable(targetMethodName = "updateArrivalTime")
+    @CascadingUpdateShadowVariable(targetMethodName = "updateShadows")
     public Long arrivalTime = null;
-    public void updateArrivalTime() {
+    @CascadingUpdateShadowVariable(targetMethodName = "updateShadows")
+    public Double vehicleCharge = null;
+    public void updateShadows() {
         if (this.getVehicle() == null) {
             this.setArrivalTime(null);
+            this.setVehicleCharge(null);
         } else {
             this.setArrivalTime(
                     this.getPrevious() == null ?
@@ -40,8 +40,16 @@ public abstract class  Visit {
                             this.getPrevious().getDepartureTime() +
                             this.getPrevious().getLocation().timeTo(this.getLocation())
             );
+            this.setVehicleCharge(
+                    this.getPrevious() == null ?
+                            this.getVehicle().getCharge() - this.getVehicle().getDischargeSpeed() *
+                            this.getVehicle().getDepot().distanceTo(this.getLocation()) :
+                            this.getPrevious().getVehicleChargeAfterVisit() - this.getVehicle().getDischargeSpeed() *
+                            this.getPrevious().getLocation().distanceTo(this.getLocation())
+            );
         }
     }
+    public abstract Double getVehicleChargeAfterVisit();
     public Long getArrivalTime_recursive() {
         Long prevDepartureTime;
         Location prevLocation;

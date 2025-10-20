@@ -18,10 +18,11 @@ public class ChargingStation extends Visit {
                            Visit previous,
                            Visit next,
                            Long arrivalTime,
+                           Double vehicleCharge,
                            Double chargingPower,
                            Integer numberOfSlots,
                            Double priceEnergy)  {
-        super(location, startTime, endTime, name, vehicle, previous, next, arrivalTime);
+        super(location, startTime, endTime, name, vehicle, previous, next, arrivalTime, vehicleCharge);
         this.chargingPower = chargingPower;
         this.numberOfSlots = numberOfSlots;
         this.priceEnergy = priceEnergy;
@@ -33,5 +34,10 @@ public class ChargingStation extends Visit {
         // TODO: wait time for a free slot
         // calculate charging time
         return (long) (((car.getMaxCharge() - car.getCharge()) / Math.min(this.chargingPower, car.getMaxChargePower())) * 3600);
+    }
+
+    @Override
+    public Double getVehicleChargeAfterVisit() {
+        return this.getVehicle().getMaxCharge();
     }
 }

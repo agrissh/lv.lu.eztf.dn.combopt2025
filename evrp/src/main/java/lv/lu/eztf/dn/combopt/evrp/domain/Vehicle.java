@@ -2,6 +2,8 @@ package lv.lu.eztf.dn.combopt.evrp.domain;
 
 import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
 import ai.timefold.solver.core.api.domain.variable.PlanningListVariable;
+import ai.timefold.solver.core.api.domain.variable.ShadowSources;
+import ai.timefold.solver.core.api.domain.variable.ShadowVariable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +30,16 @@ public class Vehicle {
     Double priceEnergyDepot; // euro / KWh
     @PlanningListVariable
     List<Visit> visits = new ArrayList<>();
+    @ShadowVariable(supplierName = "lastSupplier")
+    Visit last = null;
+    @ShadowSources("visits")
+    public Visit lastSupplier() {
+        if (this.getVisits().isEmpty()) {
+            return null;
+        } else {
+            return this.getVisits().get(this.getVisits().size() - 1);
+        }
+    }
 
     public Double getTotalDistance() {
         Double totalDistance = 0.0;
