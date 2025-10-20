@@ -57,4 +57,9 @@ public class Vehicle {
         return batteryEmpty;
 
     }
+
+    @Override
+    public String toString() {
+        return this.regNr;
+    }
 }

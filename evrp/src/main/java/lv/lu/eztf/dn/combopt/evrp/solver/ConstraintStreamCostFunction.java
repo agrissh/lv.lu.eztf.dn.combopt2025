@@ -12,9 +12,10 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
     @Override
     public Constraint @NonNull [] defineConstraints(@NonNull ConstraintFactory constraintFactory) {
         return new Constraint[] {
-                penalizeEveryVisit(constraintFactory),
+                //penalizeEveryVisit(constraintFactory),
                 totalDistance(constraintFactory),
                 batteryEmpty(constraintFactory),
+                visitTimeWindowViolated(constraintFactory),
         };
     }
     public Constraint penalizeEveryVisit(ConstraintFactory constraintFactory) {
@@ -38,5 +39,14 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
                 .filter(vehicle -> vehicle.isBatteryEmpty())
                 .penalize(HardSoftScore.ONE_HARD)
                 .asConstraint("Battery empty");
+    }
+
+    // This actually is BAD constraint braking incremental score calculation
+    public Constraint visitTimeWindowViolated(ConstraintFactory constraintFactory) {
+        return constraintFactory
+                .forEach(Visit.class)
+                .filter(visit -> visit.getDepartureTime() > visit.getEndTime())
+                .penalize(HardSoftScore.ONE_HARD)
+                .asConstraint("TW violation");
     }
 }

@@ -7,6 +7,7 @@ import lombok.Setter;
 
 @Setter @Getter @AllArgsConstructor @NoArgsConstructor
 public class Location {
+    static Double SPEED = 50.0;
     Long id;
     Double lat;
     Double lon;
@@ -17,6 +18,6 @@ public class Location {
     }
 
     public Long timeTo(Location location) {
-        return 0l;
+        return Math.round((this.distanceTo(location) / SPEED) * 3600);
     }
 }

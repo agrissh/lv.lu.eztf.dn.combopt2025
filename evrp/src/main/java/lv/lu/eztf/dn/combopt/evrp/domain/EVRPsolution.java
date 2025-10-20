@@ -25,7 +25,7 @@ public class EVRPsolution {
     @PlanningEntityCollectionProperty
     List<Vehicle> vehicleList = new ArrayList<>();
     @ValueRangeProvider
-    @ProblemFactCollectionProperty
+    @PlanningEntityCollectionProperty
     List<Visit> visitList = new ArrayList<>();
     @ProblemFactCollectionProperty
     List<Location> locationList = new ArrayList<>();

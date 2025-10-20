@@ -12,8 +12,11 @@ public class Customer extends Visit {
                     Long startTime,
                     Long endTime,
                     String name,
+                    Vehicle vehicle,
+                    Visit previous,
+                    Visit next,
                     Long serviceDuration) {
-        super(location, startTime, endTime, name);
+        super(location, startTime, endTime, name, vehicle, previous, next);
         this.serviceDuration = serviceDuration;
     }
 
