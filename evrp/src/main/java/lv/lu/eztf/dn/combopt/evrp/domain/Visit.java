@@ -1,6 +1,7 @@
 package lv.lu.eztf.dn.combopt.evrp.domain;
 
 import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
+import ai.timefold.solver.core.api.domain.variable.CascadingUpdateShadowVariable;
 import ai.timefold.solver.core.api.domain.variable.InverseRelationShadowVariable;
 import ai.timefold.solver.core.api.domain.variable.NextElementShadowVariable;
 import ai.timefold.solver.core.api.domain.variable.PreviousElementShadowVariable;
@@ -25,7 +26,23 @@ public abstract class  Visit {
     @NextElementShadowVariable(sourceVariableName = "visits")
     Visit next;
     public abstract Long getVisitTime();
-    public Long getArrivalTime() {
+    @CascadingUpdateShadowVariable(targetMethodName = "updateArrivalTime")
+    public Long arrivalTime = null;
+    public void updateArrivalTime() {
+        if (this.getVehicle() == null) {
+            this.setArrivalTime(null);
+        } else {
+            this.setArrivalTime(
+                    this.getPrevious() == null ?
+                            this.getVehicle().getOperationStartingTime() +
+                            this.getVehicle().getServiceDurationAtStart() +
+                            this.getVehicle().getDepot().timeTo(this.getLocation()) :
+                            this.getPrevious().getDepartureTime() +
+                            this.getPrevious().getLocation().timeTo(this.getLocation())
+            );
+        }
+    }
+    public Long getArrivalTime_recursive() {
         Long prevDepartureTime;
         Location prevLocation;
         if (this.getPrevious()==null && this.getVehicle()!=null) {

@@ -17,10 +17,11 @@ public class ChargingStation extends Visit {
                            Vehicle vehicle,
                            Visit previous,
                            Visit next,
+                           Long arrivalTime,
                            Double chargingPower,
                            Integer numberOfSlots,
                            Double priceEnergy)  {
-        super(location, startTime, endTime, name, vehicle, previous, next);
+        super(location, startTime, endTime, name, vehicle, previous, next, arrivalTime);
         this.chargingPower = chargingPower;
         this.numberOfSlots = numberOfSlots;
         this.priceEnergy = priceEnergy;
