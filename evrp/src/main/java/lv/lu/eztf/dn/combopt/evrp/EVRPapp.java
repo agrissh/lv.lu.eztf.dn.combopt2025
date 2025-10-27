@@ -2,11 +2,11 @@ package lv.lu.eztf.dn.combopt.evrp;
 
 import ai.timefold.solver.core.api.score.analysis.ScoreAnalysis;
 import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
-import ai.timefold.solver.core.api.solver.SolutionManager;
-import ai.timefold.solver.core.api.solver.Solver;
-import ai.timefold.solver.core.api.solver.SolverFactory;
+import ai.timefold.solver.core.api.solver.*;
 import ai.timefold.solver.core.config.solver.EnvironmentMode;
 import ai.timefold.solver.core.config.solver.SolverConfig;
+import ai.timefold.solver.core.config.solver.SolverManagerConfig;
+import ai.timefold.solver.core.config.solver.termination.TerminationConfig;
 import lombok.extern.slf4j.Slf4j;
 import lv.lu.eztf.dn.combopt.evrp.domain.*;
 import lv.lu.eztf.dn.combopt.evrp.solver.ConstraintStreamCostFunction;
@@ -15,6 +15,8 @@ import lv.lu.eztf.dn.combopt.evrp.solver.EasyJustDistanceCostFunction;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 @Slf4j
 public class EVRPapp {
@@ -22,20 +24,48 @@ public class EVRPapp {
         EVRPsolution problem = createExample();
 
         // Run optimizer
+        SolverConfig solverConfigFromXML = SolverConfig.createFromXmlResource("SolverConfig.xml");
+        //solverConfigFromXML.withTerminationConfig(new TerminationConfig().withSecondsSpentLimit(10l));
+        SolverFactory<EVRPsolution> solverFactoryFromConfigXML = SolverFactory.create(solverConfigFromXML);
+        //SolverFactory<EVRPsolution> solverFactoryFromConfigXML = SolverFactory.createFromXmlResource("SolverConfig.xml");
+
         SolverFactory<EVRPsolution> solverFactory = SolverFactory.create(
                 new SolverConfig()
                         .withSolutionClass(EVRPsolution.class)
                         .withEntityClasses(Vehicle.class, Visit.class)
                         //.withEasyScoreCalculatorClass(EasyJustDistanceCostFunction.class)
                         .withConstraintProviderClass(ConstraintStreamCostFunction.class)
-                        .withTerminationSpentLimit(Duration.ofSeconds(25))
-                        .withEnvironmentMode(EnvironmentMode.FULL_ASSERT));
-        Solver<EVRPsolution> solver = solverFactory.buildSolver();
+                        .withTerminationSpentLimit(Duration.ofSeconds(5))
+                        .withEnvironmentMode(EnvironmentMode.PHASE_ASSERT));
+
+        SolverManager<EVRPsolution, String> solverManager = SolverManager.create(solverConfigFromXML, new SolverManagerConfig());
+        String problemId = UUID.randomUUID().toString();
+        //SolverJob<EVRPsolution, String> solverJob = solverManager.solve(problemId, problem);
+        //SolverJob<EVRPsolution, String> solverJob = solverManager.solveAndListen(problemId, problem, EVRPapp::printExample);
+
+        //try {
+        //    EVRPsolution job_solution = solverJob.getFinalBestSolution();
+        //} catch (InterruptedException e) {
+        //    throw new RuntimeException(e);
+        //} catch (ExecutionException e) {
+        //    throw new RuntimeException(e);
+        //}
+        solverManager.solveBuilder()
+                .withProblemId(problemId)
+                .withProblem(problem)
+                .withBestSolutionConsumer(EVRPapp::printExample)
+                .run();
+        solverManager.solveBuilder()
+                .withProblemId(UUID.randomUUID().toString())
+                .withProblem(problem)
+                .run();
+
+        Solver<EVRPsolution> solver = solverFactoryFromConfigXML.buildSolver();
         EVRPsolution solution = solver.solve(problem);
 
         printExample(solution);
 
-        SolutionManager<EVRPsolution, HardSoftScore> solutionManager = SolutionManager.create(solverFactory);
+        SolutionManager<EVRPsolution, HardSoftScore> solutionManager = SolutionManager.create(solverFactoryFromConfigXML);
         log.info(solutionManager.explain(solution).getSummary());
 
     }
@@ -53,26 +83,26 @@ public class EVRPapp {
         vehicle.setDepot(depot);
         vehicle2.setDepot(depot);
 
-        vehicle.setCharge(4.0);
+        vehicle.setCharge(7.0);
         vehicle.setCostHourly(7.0);
         vehicle.setCostUsage(30.0);
         vehicle.setDischargeSpeed(1.0);
         vehicle.setMaxCharge(12.0);
         vehicle.setMaxChargePower(2.0);
         vehicle.setOperationStartingTime(0l);
-        vehicle.setOperationEndingTime(3600 * 8l);
+        vehicle.setOperationEndingTime(3600 * 6l);
         vehicle.setPriceEnergyDepot(1.0);
         vehicle.setServiceDurationAtFinish(60 * 10l);
         vehicle.setServiceDurationAtStart(60 * 5l);
 
-        vehicle2.setCharge(6.0);
+        vehicle2.setCharge(4.0);
         vehicle2.setCostHourly(7.0);
         vehicle2.setCostUsage(30.0);
         vehicle2.setDischargeSpeed(1.0);
         vehicle2.setMaxCharge(12.0);
         vehicle2.setMaxChargePower(2.0);
         vehicle2.setOperationStartingTime(0l);
-        vehicle2.setOperationEndingTime(3600 * 8l);
+        vehicle2.setOperationEndingTime(3600 * 6l);
         vehicle2.setPriceEnergyDepot(1.0);
         vehicle2.setServiceDurationAtFinish(60 * 10l);
         vehicle2.setServiceDurationAtStart(60 * 5l);
