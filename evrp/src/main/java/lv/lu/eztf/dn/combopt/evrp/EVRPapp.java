@@ -1,5 +1,7 @@
 package lv.lu.eztf.dn.combopt.evrp;
 
+import ai.timefold.solver.benchmark.api.PlannerBenchmark;
+import ai.timefold.solver.benchmark.api.PlannerBenchmarkFactory;
 import ai.timefold.solver.core.api.score.analysis.ScoreAnalysis;
 import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
 import ai.timefold.solver.core.api.solver.*;
@@ -13,17 +15,36 @@ import lv.lu.eztf.dn.combopt.evrp.solver.ConstraintStreamCostFunction;
 import lv.lu.eztf.dn.combopt.evrp.solver.EasyCostFunction;
 import lv.lu.eztf.dn.combopt.evrp.solver.EasyJustDistanceCostFunction;
 
+import java.io.File;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 @Slf4j
 public class EVRPapp {
     public static void main(String[] args) {
-        EVRPsolution problem = createExample();
+        //runSolvers();
+        runBenchmarker();
+        //generateData();
+    }
 
+    private static void runBenchmarker() {
+        //EVRPsolution problem = createExample();
+        PlannerBenchmarkFactory benchmarkFactory = PlannerBenchmarkFactory.createFromSolverConfigXmlResource(
+                "SolverConfig.xml");
+        PlannerBenchmarkFactory benchmarkFactoryFromXmlConfig =
+                PlannerBenchmarkFactory.createFromXmlResource("BenchmarkConfig.xml");
+        //PlannerBenchmark benchmark = benchmarkFactory.buildPlannerBenchmark(problem);
+        PlannerBenchmark benchmark = benchmarkFactoryFromXmlConfig.buildPlannerBenchmark();
+        benchmark.benchmarkAndShowReportInBrowser();
+    }
+
+    private static void runSolvers() {
         // Run optimizer
+        EVRPsolution problem = createExample();
         SolverConfig solverConfigFromXML = SolverConfig.createFromXmlResource("SolverConfig.xml");
         //solverConfigFromXML.withTerminationConfig(new TerminationConfig().withSecondsSpentLimit(10l));
         SolverFactory<EVRPsolution> solverFactoryFromConfigXML = SolverFactory.create(solverConfigFromXML);
@@ -35,13 +56,14 @@ public class EVRPapp {
                         .withEntityClasses(Vehicle.class, Visit.class)
                         //.withEasyScoreCalculatorClass(EasyJustDistanceCostFunction.class)
                         .withConstraintProviderClass(ConstraintStreamCostFunction.class)
-                        .withTerminationSpentLimit(Duration.ofSeconds(5))
+                        .withTerminationConfig(new TerminationConfig().withDiminishedReturns())
                         .withEnvironmentMode(EnvironmentMode.PHASE_ASSERT));
 
-        SolverManager<EVRPsolution, String> solverManager = SolverManager.create(solverConfigFromXML, new SolverManagerConfig());
+        /*SolverManager<EVRPsolution, String> solverManager = SolverManager.create(solverFactoryFromConfigXML, new SolverManagerConfig());
         String problemId = UUID.randomUUID().toString();
-        //SolverJob<EVRPsolution, String> solverJob = solverManager.solve(problemId, problem);
+        SolverJob<EVRPsolution, String> solverJob = solverManager.solve(problemId, problem);
         //SolverJob<EVRPsolution, String> solverJob = solverManager.solveAndListen(problemId, problem, EVRPapp::printExample);
+         */
 
         //try {
         //    EVRPsolution job_solution = solverJob.getFinalBestSolution();
@@ -50,15 +72,15 @@ public class EVRPapp {
         //} catch (ExecutionException e) {
         //    throw new RuntimeException(e);
         //}
-        solverManager.solveBuilder()
-                .withProblemId(problemId)
+        /*solverManager.solveBuilder()
+                .withProblemId(UUID.randomUUID().toString())
                 .withProblem(problem)
                 .withBestSolutionConsumer(EVRPapp::printExample)
                 .run();
         solverManager.solveBuilder()
                 .withProblemId(UUID.randomUUID().toString())
                 .withProblem(problem)
-                .run();
+                .run();*/
 
         Solver<EVRPsolution> solver = solverFactoryFromConfigXML.buildSolver();
         EVRPsolution solution = solver.solve(problem);
@@ -67,7 +89,6 @@ public class EVRPapp {
 
         SolutionManager<EVRPsolution, HardSoftScore> solutionManager = SolutionManager.create(solverFactoryFromConfigXML);
         log.info(solutionManager.explain(solution).getSummary());
-
     }
 
     private static EVRPsolution createExample() {
@@ -187,13 +208,96 @@ public class EVRPapp {
                             .formatted(visit.getVehicleChargeAfterVisit()));
                 }
             }
+            Visit last = vehicle.lastSupplier();
             log.info("Charge when finished in depot %.2f"
-                    .formatted(vehicle.getLast() != null ? vehicle.getLast().getVehicleChargeAfterVisit() - vehicle.getDischargeSpeed() *
-                            vehicle.getLast().getLocation().distanceTo(vehicle.getDepot()) :
+                    .formatted(last != null ? last.getVehicleChargeAfterVisit() - vehicle.getDischargeSpeed() *
+                            last.getLocation().distanceTo(vehicle.getDepot()) :
                             vehicle.getCharge()));
         }
         log.info("===================================================");
 
     }
 
+    private static EVRPsolution generateExample(Integer SCALE) {
+        EVRPsolution problem = new EVRPsolution();
+        problem.setName(LocalDateTime.now().toString()+"_"+SCALE.toString());
+
+        Random random = new Random();
+        Location depot = null;
+        Long ID = 0l;
+        Integer SIZE_OF_MAP = SCALE;
+        Integer DEPOT_SIZE = 5;
+        Integer numberOfVehicles = SCALE / 20 + 1;
+        Double MAX_CHARGE = SIZE_OF_MAP * 2.5;
+        Double DISCHARGE_SPEED = 1.0;
+        for (int i = 1; i <= numberOfVehicles; i++) {
+            Vehicle vehicle = new Vehicle();
+            vehicle.setRegNr("vehicle-"+i);
+            problem.getVehicleList().add(vehicle);
+
+            if (i - 1 % DEPOT_SIZE == 0) {
+                depot = new Location(ID,random.nextDouble() * SIZE_OF_MAP,random.nextDouble() * SIZE_OF_MAP);
+                ID++;
+                problem.getLocationList().add(depot);
+            }
+            vehicle.setDepot(depot);
+            vehicle.setCharge(MAX_CHARGE);
+            vehicle.setCostHourly(7.0);
+            vehicle.setCostUsage(30.0);
+            vehicle.setDischargeSpeed(DISCHARGE_SPEED);
+            vehicle.setMaxCharge(MAX_CHARGE);
+            vehicle.setMaxChargePower(2.0);
+            vehicle.setOperationStartingTime(0l);
+            vehicle.setOperationEndingTime(3600 * 8l);
+            vehicle.setPriceEnergyDepot(1.0);
+            vehicle.setServiceDurationAtFinish(60 * 10l);
+            vehicle.setServiceDurationAtStart(60 * 5l);
+        }
+        for (int i = 1; i <= SCALE; i++) {
+            Customer customer1 = new Customer();
+            customer1.setName("Customer-"+i);
+            problem.getVisitList().add(customer1);
+            Location loc1 = new Location(ID,random.nextDouble() * SIZE_OF_MAP,random.nextDouble() * SIZE_OF_MAP);
+            ID++;
+            problem.getLocationList().add(loc1);
+            customer1.setLocation(loc1);
+            customer1.setServiceDuration(60 * 15l);
+            customer1.setStartTime(random.nextLong(3) * 3600);
+            customer1.setEndTime(customer1.getStartTime() + 3600 * 6l);
+        }
+
+        Location locCS = new Location(ID,random.nextDouble() * SIZE_OF_MAP,random.nextDouble() * SIZE_OF_MAP);
+        ID++;
+        problem.getLocationList().add(locCS);
+        for (int i = 1; i <= numberOfVehicles; i++) {
+            ChargingStation chargingStation = new ChargingStation();
+            chargingStation.setName("Charging Station-"+i);
+            chargingStation.setLocation(locCS);
+            chargingStation.setStartTime(0l);
+            chargingStation.setEndTime(3600 * 8l);
+            chargingStation.setChargingPower(3.0);
+            chargingStation.setPriceEnergy(1.5);
+            chargingStation.setNumberOfSlots(2);
+            problem.getVisitList().add(chargingStation);
+        }
+
+        return problem;
+    }
+
+    private static void generateData() {
+        EVRPsolution problem1 = generateExample(10);
+        EVRPsolution problem2 = generateExample(25);
+        EVRPsolution problem3 = generateExample(40);
+        EVRPsolution problem4 = generateExample(49);
+        EVRPsolution problem5 = generateExample(50);
+
+        JsonIO jsonIO = new JsonIO();
+        jsonIO.write(problem1, new File("data/problem_10.json"));
+        // Check if we can read what we have written
+        jsonIO.read(new File("data/problem_10.json"));
+        jsonIO.write(problem2, new File("data/problem_25.json"));
+        jsonIO.write(problem3, new File("data/problem_40.json"));
+        jsonIO.write(problem4, new File("data/problem_49.json"));
+        jsonIO.write(problem5, new File("data/problem_50.json"));
+    }
 }

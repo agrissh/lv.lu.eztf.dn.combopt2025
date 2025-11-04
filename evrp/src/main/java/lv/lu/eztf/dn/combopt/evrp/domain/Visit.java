@@ -2,6 +2,7 @@ package lv.lu.eztf.dn.combopt.evrp.domain;
 
 import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
 import ai.timefold.solver.core.api.domain.variable.*;
+import com.fasterxml.jackson.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,19 +10,30 @@ import lombok.Setter;
 
 @PlanningEntity
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
+@JsonIdentityInfo(scope = Visit.class, property = "name",
+        generator = ObjectIdGenerators.PropertyGenerator.class)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.CLASS,
+        property = "@class"
+)
 public abstract class  Visit {
 
+    @JsonIdentityReference(alwaysAsId = true)
     Location location;
     Long startTime; // second of a day
     Long endTime; // second of a day
     String name;
 
     @InverseRelationShadowVariable(sourceVariableName = "visits")
+    @JsonIdentityReference(alwaysAsId = true)
     Vehicle vehicle;
     @PreviousElementShadowVariable(sourceVariableName = "visits")
+    @JsonIdentityReference(alwaysAsId = true)
     Visit previous;
     @NextElementShadowVariable(sourceVariableName = "visits")
+    @JsonIdentityReference(alwaysAsId = true)
     Visit next;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public abstract Long getVisitTime();
     @CascadingUpdateShadowVariable(targetMethodName = "updateShadows")
     public Long arrivalTime = null;
@@ -49,7 +61,9 @@ public abstract class  Visit {
             );
         }
     }
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public abstract Double getVehicleChargeAfterVisit();
+    @JsonIgnore
     public Long getArrivalTime_recursive() {
         Long prevDepartureTime;
         Location prevLocation;
@@ -64,8 +78,10 @@ public abstract class  Visit {
 
         return prevDepartureTime + prevLocation.timeTo(this.getLocation());
     }
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public Long getDepartureTime() {
-        return Math.max(this.getArrivalTime(), this.getStartTime()) + this.getVisitTime();
+        return this.getArrivalTime() != null ? Math.max(this.getArrivalTime(), this.getStartTime()) + this.getVisitTime()
+                : null;
     }
 
     @Override

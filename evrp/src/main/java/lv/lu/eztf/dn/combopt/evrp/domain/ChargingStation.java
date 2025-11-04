@@ -1,5 +1,6 @@
 package lv.lu.eztf.dn.combopt.evrp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,11 +34,13 @@ public class ChargingStation extends Visit {
         Vehicle car = this.getVehicle();
         // TODO: wait time for a free slot
         // calculate charging time
-        return (long) (((car.getMaxCharge() - car.getCharge()) / Math.min(this.chargingPower, car.getMaxChargePower())) * 3600);
+        return car != null ?
+                (long) (((car.getMaxCharge() - car.getCharge()) / Math.min(this.chargingPower, car.getMaxChargePower())) * 3600)
+                : null;
     }
 
     @Override
     public Double getVehicleChargeAfterVisit() {
-        return this.getVehicle().getMaxCharge();
+        return this.getVehicle() != null ? this.getVehicle().getMaxCharge() : null;
     }
 }

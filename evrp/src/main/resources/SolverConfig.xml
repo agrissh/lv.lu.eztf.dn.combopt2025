@@ -2,6 +2,7 @@
 <solver xmlns="https://timefold.ai/xsd/solver" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://timefold.ai/xsd/solver https://timefold.ai/xsd/solver/solver.xsd">
     <environmentMode>PHASE_ASSERT</environmentMode>
+
     <!-- Define the model -->
     <solutionClass>lv.lu.eztf.dn.combopt.evrp.domain.EVRPsolution</solutionClass>
     <entityClass>lv.lu.eztf.dn.combopt.evrp.domain.Vehicle</entityClass>
@@ -14,19 +15,19 @@
 
     <!-- Configure the optimization algorithms (optional) -->
     <termination>
-        <secondsSpentLimit>5</secondsSpentLimit>
-        <!--<diminishedReturns />-->
+        <!--<secondsSpentLimit>5</secondsSpentLimit>-->
+        <diminishedReturns />
     </termination>
 
     <constructionHeuristic />
 
     <localSearch>
-        <subListChangeMoveSelector />
+        <!--<subListChangeMoveSelector />
         <acceptor>
             <valueTabuSize>2</valueTabuSize>
         </acceptor>
         <forager>
             <acceptedCountLimit>1000</acceptedCountLimit>
-        </forager>
+        </forager>-->
     </localSearch>
 </solver>

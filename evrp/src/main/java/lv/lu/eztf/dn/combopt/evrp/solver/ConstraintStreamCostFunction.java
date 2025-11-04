@@ -134,6 +134,7 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
         return constraintFactory
                 .forEach(ChargingStation.class)
                 .groupBy(ChargingStation::getVehicle, ConstraintCollectors.max(ChargingStation::getPriceEnergy))
+                // TODO: expand with cars without charging stations!
                 .join(Visit.class, equal((v,p)->v, Visit::getVehicle))
                 .filter((vehicle, price, visit) -> visit.getNext() == null)
                 .reward(HardSoftScore.ONE_SOFT,(vehicle, maxStationPrice, lastVisit) -> (int) Math.round(Math.max(vehicle.getPriceEnergyDepot(), maxStationPrice) * 100 *

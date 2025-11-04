@@ -4,18 +4,23 @@ import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
 import ai.timefold.solver.core.api.domain.variable.PlanningListVariable;
 import ai.timefold.solver.core.api.domain.variable.ShadowSources;
 import ai.timefold.solver.core.api.domain.variable.ShadowVariable;
+import com.fasterxml.jackson.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@PlanningEntity
+@PlanningEntity @Slf4j
 @Setter @Getter @AllArgsConstructor @NoArgsConstructor
+@JsonIdentityInfo(scope = Vehicle.class, property = "regNr",
+        generator = ObjectIdGenerators.PropertyGenerator.class)
 public class Vehicle {
-    String regNr;
+   String regNr;
+    @JsonIdentityReference(alwaysAsId = true)
     Location depot;
     Long serviceDurationAtStart; // sec
     Long serviceDurationAtFinish; // sec
@@ -29,18 +34,24 @@ public class Vehicle {
     Double costHourly; // euro / hour
     Double priceEnergyDepot; // euro / KWh
     @PlanningListVariable
+    @JsonIdentityReference(alwaysAsId = true)
     List<Visit> visits = new ArrayList<>();
     @ShadowVariable(supplierName = "lastSupplier")
+    @JsonIdentityReference(alwaysAsId = true)
     Visit last = null;
+    // TODO: THIS DOES NOT WORK !!!!!
     @ShadowSources("visits")
+    @JsonIgnore
     public Visit lastSupplier() {
-        if (this.getVisits().isEmpty()) {
-            return null;
-        } else {
-            return this.getVisits().get(this.getVisits().size() - 1);
+        Visit last = null;
+        if (!this.getVisits().isEmpty()) {
+            last = this.getVisits().get(this.getVisits().size() - 1);
         }
+        //log.info(String.valueOf(last));
+        return last;
     }
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public Double getTotalDistance() {
         Double totalDistance = 0.0;
         Location prevLoc = this.getDepot();
@@ -53,7 +64,7 @@ public class Vehicle {
                 prevLoc.distanceTo(this.getDepot());
         return totalDistance;
     }
-
+    @JsonIgnore
     public Boolean isBatteryEmpty() {
         Boolean batteryEmpty = false;
         Double charge = this.getCharge();

@@ -1,0 +1,877 @@
+{
+  "score" : null,
+  "name" : "2025-11-03T15:59:47.249544600_40",
+  "vehicleList" : [ {
+    "regNr" : "vehicle-1",
+    "depot" : 0,
+    "serviceDurationAtStart" : 300,
+    "serviceDurationAtFinish" : 600,
+    "operationStartingTime" : 0,
+    "operationEndingTime" : 28800,
+    "maxCharge" : 100.0,
+    "charge" : 100.0,
+    "dischargeSpeed" : 1.0,
+    "maxChargePower" : 2.0,
+    "costUsage" : 30.0,
+    "costHourly" : 7.0,
+    "priceEnergyDepot" : 1.0,
+    "visits" : [ ],
+    "last" : null,
+    "totalDistance" : 0.0
+  }, {
+    "regNr" : "vehicle-2",
+    "depot" : 0,
+    "serviceDurationAtStart" : 300,
+    "serviceDurationAtFinish" : 600,
+    "operationStartingTime" : 0,
+    "operationEndingTime" : 28800,
+    "maxCharge" : 100.0,
+    "charge" : 100.0,
+    "dischargeSpeed" : 1.0,
+    "maxChargePower" : 2.0,
+    "costUsage" : 30.0,
+    "costHourly" : 7.0,
+    "priceEnergyDepot" : 1.0,
+    "visits" : [ ],
+    "last" : null,
+    "totalDistance" : 0.0
+  }, {
+    "regNr" : "vehicle-3",
+    "depot" : 0,
+    "serviceDurationAtStart" : 300,
+    "serviceDurationAtFinish" : 600,
+    "operationStartingTime" : 0,
+    "operationEndingTime" : 28800,
+    "maxCharge" : 100.0,
+    "charge" : 100.0,
+    "dischargeSpeed" : 1.0,
+    "maxChargePower" : 2.0,
+    "costUsage" : 30.0,
+    "costHourly" : 7.0,
+    "priceEnergyDepot" : 1.0,
+    "visits" : [ ],
+    "last" : null,
+    "totalDistance" : 0.0
+  } ],
+  "visitList" : [ {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-1",
+    "location" : 1,
+    "startTime" : 3600,
+    "endTime" : 25200,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-2",
+    "location" : 2,
+    "startTime" : 7200,
+    "endTime" : 28800,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-3",
+    "location" : 3,
+    "startTime" : 0,
+    "endTime" : 21600,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-4",
+    "location" : 4,
+    "startTime" : 3600,
+    "endTime" : 25200,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-5",
+    "location" : 5,
+    "startTime" : 7200,
+    "endTime" : 28800,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-6",
+    "location" : 6,
+    "startTime" : 3600,
+    "endTime" : 25200,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-7",
+    "location" : 7,
+    "startTime" : 7200,
+    "endTime" : 28800,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-8",
+    "location" : 8,
+    "startTime" : 3600,
+    "endTime" : 25200,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-9",
+    "location" : 9,
+    "startTime" : 7200,
+    "endTime" : 28800,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-10",
+    "location" : 10,
+    "startTime" : 3600,
+    "endTime" : 25200,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-11",
+    "location" : 11,
+    "startTime" : 0,
+    "endTime" : 21600,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-12",
+    "location" : 12,
+    "startTime" : 0,
+    "endTime" : 21600,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-13",
+    "location" : 13,
+    "startTime" : 0,
+    "endTime" : 21600,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-14",
+    "location" : 14,
+    "startTime" : 7200,
+    "endTime" : 28800,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-15",
+    "location" : 15,
+    "startTime" : 7200,
+    "endTime" : 28800,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-16",
+    "location" : 16,
+    "startTime" : 7200,
+    "endTime" : 28800,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-17",
+    "location" : 17,
+    "startTime" : 3600,
+    "endTime" : 25200,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-18",
+    "location" : 18,
+    "startTime" : 3600,
+    "endTime" : 25200,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-19",
+    "location" : 19,
+    "startTime" : 3600,
+    "endTime" : 25200,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-20",
+    "location" : 20,
+    "startTime" : 0,
+    "endTime" : 21600,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-21",
+    "location" : 21,
+    "startTime" : 0,
+    "endTime" : 21600,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-22",
+    "location" : 22,
+    "startTime" : 0,
+    "endTime" : 21600,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-23",
+    "location" : 23,
+    "startTime" : 3600,
+    "endTime" : 25200,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-24",
+    "location" : 24,
+    "startTime" : 0,
+    "endTime" : 21600,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-25",
+    "location" : 25,
+    "startTime" : 7200,
+    "endTime" : 28800,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-26",
+    "location" : 26,
+    "startTime" : 3600,
+    "endTime" : 25200,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-27",
+    "location" : 27,
+    "startTime" : 7200,
+    "endTime" : 28800,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-28",
+    "location" : 28,
+    "startTime" : 0,
+    "endTime" : 21600,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-29",
+    "location" : 29,
+    "startTime" : 0,
+    "endTime" : 21600,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-30",
+    "location" : 30,
+    "startTime" : 7200,
+    "endTime" : 28800,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-31",
+    "location" : 31,
+    "startTime" : 7200,
+    "endTime" : 28800,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-32",
+    "location" : 32,
+    "startTime" : 7200,
+    "endTime" : 28800,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-33",
+    "location" : 33,
+    "startTime" : 7200,
+    "endTime" : 28800,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-34",
+    "location" : 34,
+    "startTime" : 7200,
+    "endTime" : 28800,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-35",
+    "location" : 35,
+    "startTime" : 0,
+    "endTime" : 21600,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-36",
+    "location" : 36,
+    "startTime" : 7200,
+    "endTime" : 28800,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-37",
+    "location" : 37,
+    "startTime" : 0,
+    "endTime" : 21600,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-38",
+    "location" : 38,
+    "startTime" : 0,
+    "endTime" : 21600,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-39",
+    "location" : 39,
+    "startTime" : 0,
+    "endTime" : 21600,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.Customer",
+    "name" : "Customer-40",
+    "location" : 40,
+    "startTime" : 0,
+    "endTime" : 21600,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "serviceDuration" : 900,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : 900,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.ChargingStation",
+    "name" : "Charging Station-1",
+    "location" : 41,
+    "startTime" : 0,
+    "endTime" : 28800,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "chargingPower" : 3.0,
+    "numberOfSlots" : 2,
+    "priceEnergy" : 1.5,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : null,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.ChargingStation",
+    "name" : "Charging Station-2",
+    "location" : 41,
+    "startTime" : 0,
+    "endTime" : 28800,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "chargingPower" : 3.0,
+    "numberOfSlots" : 2,
+    "priceEnergy" : 1.5,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : null,
+    "departureTime" : null
+  }, {
+    "@class" : "lv.lu.eztf.dn.combopt.evrp.domain.ChargingStation",
+    "name" : "Charging Station-3",
+    "location" : 41,
+    "startTime" : 0,
+    "endTime" : 28800,
+    "vehicle" : null,
+    "previous" : null,
+    "next" : null,
+    "arrivalTime" : null,
+    "vehicleCharge" : null,
+    "chargingPower" : 3.0,
+    "numberOfSlots" : 2,
+    "priceEnergy" : 1.5,
+    "vehicleChargeAfterVisit" : null,
+    "visitTime" : null,
+    "departureTime" : null
+  } ],
+  "locationList" : [ {
+    "id" : 0,
+    "lat" : 20.105533818106295,
+    "lon" : 19.189580450488197
+  }, {
+    "id" : 1,
+    "lat" : 0.6206459124854913,
+    "lon" : 23.05681505864421
+  }, {
+    "id" : 2,
+    "lat" : 29.203454230003807,
+    "lon" : 7.891327407012412
+  }, {
+    "id" : 3,
+    "lat" : 24.664278777236834,
+    "lon" : 12.981391441211345
+  }, {
+    "id" : 4,
+    "lat" : 39.948518970682976,
+    "lon" : 39.150313541310695
+  }, {
+    "id" : 5,
+    "lat" : 32.850303420218715,
+    "lon" : 5.9652736736005485
+  }, {
+    "id" : 6,
+    "lat" : 13.460577220837969,
+    "lon" : 25.25208751700403
+  }, {
+    "id" : 7,
+    "lat" : 6.829801495546626,
+    "lon" : 31.618001792213487
+  }, {
+    "id" : 8,
+    "lat" : 9.361904022136613,
+    "lon" : 36.341888178555315
+  }, {
+    "id" : 9,
+    "lat" : 8.43116432230783,
+    "lon" : 3.2661932791546278
+  }, {
+    "id" : 10,
+    "lat" : 17.210846521098553,
+    "lon" : 13.888463801348818
+  }, {
+    "id" : 11,
+    "lat" : 6.46500011398536,
+    "lon" : 29.98656635487734
+  }, {
+    "id" : 12,
+    "lat" : 38.51948897768685,
+    "lon" : 9.095039551263774
+  }, {
+    "id" : 13,
+    "lat" : 4.2550532293985155,
+    "lon" : 17.20297929859957
+  }, {
+    "id" : 14,
+    "lat" : 37.92387788649921,
+    "lon" : 16.622187473342013
+  }, {
+    "id" : 15,
+    "lat" : 25.958892356740808,
+    "lon" : 15.780070048586591
+  }, {
+    "id" : 16,
+    "lat" : 25.32216783369399,
+    "lon" : 1.5749743496116553
+  }, {
+    "id" : 17,
+    "lat" : 31.138777840105124,
+    "lon" : 11.583587338652679
+  }, {
+    "id" : 18,
+    "lat" : 27.582094618552638,
+    "lon" : 12.506730095030768
+  }, {
+    "id" : 19,
+    "lat" : 13.6033164309362,
+    "lon" : 30.440297628087578
+  }, {
+    "id" : 20,
+    "lat" : 34.060217579800764,
+    "lon" : 26.51465791395284
+  }, {
+    "id" : 21,
+    "lat" : 0.11585801105327587,
+    "lon" : 1.7325223557892189
+  }, {
+    "id" : 22,
+    "lat" : 9.710410106498127,
+    "lon" : 23.449958692050256
+  }, {
+    "id" : 23,
+    "lat" : 11.882661065841829,
+    "lon" : 23.79291742764306
+  }, {
+    "id" : 24,
+    "lat" : 19.902268240589102,
+    "lon" : 10.813619197276614
+  }, {
+    "id" : 25,
+    "lat" : 8.394118341535727,
+    "lon" : 13.98815927592632
+  }, {
+    "id" : 26,
+    "lat" : 31.010451382468407,
+    "lon" : 1.9101251650148798
+  }, {
+    "id" : 27,
+    "lat" : 37.67251185930984,
+    "lon" : 25.934813662317886
+  }, {
+    "id" : 28,
+    "lat" : 11.03750478778936,
+    "lon" : 27.011736252217368
+  }, {
+    "id" : 29,
+    "lat" : 34.63125889811421,
+    "lon" : 37.59084957688492
+  }, {
+    "id" : 30,
+    "lat" : 37.53461500361852,
+    "lon" : 17.246989505198687
+  }, {
+    "id" : 31,
+    "lat" : 2.3000875263274745,
+    "lon" : 30.801132236800424
+  }, {
+    "id" : 32,
+    "lat" : 30.30094235914328,
+    "lon" : 7.1455650133106285
+  }, {
+    "id" : 33,
+    "lat" : 8.219558543675314,
+    "lon" : 30.90883640355949
+  }, {
+    "id" : 34,
+    "lat" : 0.061811536541407364,
+    "lon" : 4.59891863873271
+  }, {
+    "id" : 35,
+    "lat" : 16.333415907785295,
+    "lon" : 21.816109852998743
+  }, {
+    "id" : 36,
+    "lat" : 19.713166420161656,
+    "lon" : 23.658841262802994
+  }, {
+    "id" : 37,
+    "lat" : 26.05992393146075,
+    "lon" : 26.800557188472677
+  }, {
+    "id" : 38,
+    "lat" : 31.813347131395417,
+    "lon" : 20.19587929408476
+  }, {
+    "id" : 39,
+    "lat" : 14.630249616088381,
+    "lon" : 9.758299488062473
+  }, {
+    "id" : 40,
+    "lat" : 16.717503677399485,
+    "lon" : 23.952860515914544
+  }, {
+    "id" : 41,
+    "lat" : 32.84459841929911,
+    "lon" : 8.513486568871835
+  } ]
+}
