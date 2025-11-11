@@ -2,26 +2,19 @@ package lv.lu.eztf.dn.combopt.evrp;
 
 import ai.timefold.solver.benchmark.api.PlannerBenchmark;
 import ai.timefold.solver.benchmark.api.PlannerBenchmarkFactory;
-import ai.timefold.solver.core.api.score.analysis.ScoreAnalysis;
 import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
 import ai.timefold.solver.core.api.solver.*;
 import ai.timefold.solver.core.config.solver.EnvironmentMode;
 import ai.timefold.solver.core.config.solver.SolverConfig;
-import ai.timefold.solver.core.config.solver.SolverManagerConfig;
 import ai.timefold.solver.core.config.solver.termination.TerminationConfig;
 import lombok.extern.slf4j.Slf4j;
 import lv.lu.eztf.dn.combopt.evrp.domain.*;
 import lv.lu.eztf.dn.combopt.evrp.solver.ConstraintStreamCostFunction;
-import lv.lu.eztf.dn.combopt.evrp.solver.EasyCostFunction;
-import lv.lu.eztf.dn.combopt.evrp.solver.EasyJustDistanceCostFunction;
 
 import java.io.File;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 @Slf4j
 public class EVRPapp {
@@ -34,7 +27,7 @@ public class EVRPapp {
     private static void runBenchmarker() {
         //EVRPsolution problem = createExample();
         PlannerBenchmarkFactory benchmarkFactory = PlannerBenchmarkFactory.createFromSolverConfigXmlResource(
-                "SolverConfig.xml");
+                "solverConfig.xml");
         PlannerBenchmarkFactory benchmarkFactoryFromXmlConfig =
                 PlannerBenchmarkFactory.createFromXmlResource("BenchmarkConfig.xml");
         //PlannerBenchmark benchmark = benchmarkFactory.buildPlannerBenchmark(problem);
@@ -45,7 +38,7 @@ public class EVRPapp {
     private static void runSolvers() {
         // Run optimizer
         EVRPsolution problem = createExample();
-        SolverConfig solverConfigFromXML = SolverConfig.createFromXmlResource("SolverConfig.xml");
+        SolverConfig solverConfigFromXML = SolverConfig.createFromXmlResource("solverConfig.xml");
         //solverConfigFromXML.withTerminationConfig(new TerminationConfig().withSecondsSpentLimit(10l));
         SolverFactory<EVRPsolution> solverFactoryFromConfigXML = SolverFactory.create(solverConfigFromXML);
         //SolverFactory<EVRPsolution> solverFactoryFromConfigXML = SolverFactory.createFromXmlResource("SolverConfig.xml");
@@ -285,19 +278,19 @@ public class EVRPapp {
     }
 
     private static void generateData() {
-        EVRPsolution problem1 = generateExample(10);
-        EVRPsolution problem2 = generateExample(25);
+        EVRPsolution problem1 = generateExample(100);
+        /*EVRPsolution problem2 = generateExample(25);
         EVRPsolution problem3 = generateExample(40);
         EVRPsolution problem4 = generateExample(49);
-        EVRPsolution problem5 = generateExample(50);
+        EVRPsolution problem5 = generateExample(50);*/
 
         JsonIO jsonIO = new JsonIO();
-        jsonIO.write(problem1, new File("data/problem_10.json"));
+        jsonIO.write(problem1, new File("data/problem_100.json"));
         // Check if we can read what we have written
-        jsonIO.read(new File("data/problem_10.json"));
+        /*jsonIO.read(new File("data/problem_10.json"));
         jsonIO.write(problem2, new File("data/problem_25.json"));
         jsonIO.write(problem3, new File("data/problem_40.json"));
         jsonIO.write(problem4, new File("data/problem_49.json"));
-        jsonIO.write(problem5, new File("data/problem_50.json"));
+        jsonIO.write(problem5, new File("data/problem_50.json"));*/
     }
 }

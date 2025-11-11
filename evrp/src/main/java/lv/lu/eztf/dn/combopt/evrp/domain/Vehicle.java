@@ -19,7 +19,7 @@ import java.util.List;
 @JsonIdentityInfo(scope = Vehicle.class, property = "regNr",
         generator = ObjectIdGenerators.PropertyGenerator.class)
 public class Vehicle {
-   String regNr;
+    String regNr;
     @JsonIdentityReference(alwaysAsId = true)
     Location depot;
     Long serviceDurationAtStart; // sec
@@ -34,7 +34,6 @@ public class Vehicle {
     Double costHourly; // euro / hour
     Double priceEnergyDepot; // euro / KWh
     @PlanningListVariable
-    @JsonIdentityReference(alwaysAsId = true)
     List<Visit> visits = new ArrayList<>();
     @ShadowVariable(supplierName = "lastSupplier")
     @JsonIdentityReference(alwaysAsId = true)

@@ -29,6 +29,7 @@
             <inputSolutionFile>data/problem_10.json</inputSolutionFile>
             <inputSolutionFile>data/problem_25.json</inputSolutionFile>
             <inputSolutionFile>data/problem_50.json</inputSolutionFile>
+            <inputSolutionFile>data/problem_100.json</inputSolutionFile>
             <problemStatisticType>STEP_SCORE</problemStatisticType>
             <problemStatisticType>BEST_SCORE</problemStatisticType>
             <singleStatisticType>PICKED_MOVE_TYPE_BEST_SCORE_DIFF</singleStatisticType>

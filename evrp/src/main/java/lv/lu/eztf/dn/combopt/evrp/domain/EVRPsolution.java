@@ -6,6 +6,7 @@ import ai.timefold.solver.core.api.domain.solution.PlanningSolution;
 import ai.timefold.solver.core.api.domain.solution.ProblemFactCollectionProperty;
 import ai.timefold.solver.core.api.domain.valuerange.ValueRangeProvider;
 import ai.timefold.solver.core.api.score.buildin.hardsoft.HardSoftScore;
+import ai.timefold.solver.core.api.solver.SolverStatus;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +21,7 @@ import java.util.List;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 @Slf4j
 public class EVRPsolution {
+    SolverStatus solverStatus;
     @PlanningScore
     HardSoftScore score;
     String name;
@@ -28,6 +30,7 @@ public class EVRPsolution {
     List<Vehicle> vehicleList = new ArrayList<>();
     @ValueRangeProvider
     @PlanningEntityCollectionProperty
+    @JsonIdentityReference(alwaysAsId = true)
     List<Visit> visitList = new ArrayList<>();
     @ProblemFactCollectionProperty
     List<Location> locationList = new ArrayList<>();
