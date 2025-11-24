@@ -20,8 +20,8 @@ import java.util.Random;
 public class EVRPapp {
     public static void main(String[] args) {
         //runSolvers();
-        runBenchmarker();
-        //generateData();
+        //runBenchmarker();
+        generateData();
     }
 
     private static void runBenchmarker() {
@@ -277,15 +277,87 @@ public class EVRPapp {
         return problem;
     }
 
+    private static EVRPsolution generateRealExample(Integer SCALE) {
+        EVRPsolution problem = new EVRPsolution();
+        problem.setName(LocalDateTime.now().toString()+"_"+SCALE.toString());
+
+        Random random = new Random();
+        Location depot = null;
+        Long ID = 0l;
+        //Integer SIZE_OF_MAP = SCALE;
+        Double UPPER_LEFT_COORD_LAT = 56.9947;
+        Double UPPER_LEFT_COORD_LON = 24.0309;
+        Double LOWER_RIGHT_COORD_LAT = 56.8884;
+        Double LOWER_RIGHT_COORD_LON = 24.2520;
+        Integer DEPOT_SIZE = 1;
+        Integer numberOfVehicles = SCALE / 20 + 1;
+        Double MAX_CHARGE = 25.0;
+        Double DISCHARGE_SPEED = 1.0;
+        for (int i = 1; i <= numberOfVehicles; i++) {
+            Vehicle vehicle = new Vehicle();
+            vehicle.setRegNr("vehicle-"+i);
+            problem.getVehicleList().add(vehicle);
+
+            if ((i - 1) % DEPOT_SIZE == 0) {
+                depot =  new Location(ID, LOWER_RIGHT_COORD_LAT + (UPPER_LEFT_COORD_LAT - LOWER_RIGHT_COORD_LAT) * random.nextDouble(),
+                        UPPER_LEFT_COORD_LON + (LOWER_RIGHT_COORD_LON - UPPER_LEFT_COORD_LON) * random.nextDouble());
+                ID++;
+                problem.getLocationList().add(depot);
+            }
+            vehicle.setDepot(depot);
+            vehicle.setCharge(MAX_CHARGE);
+            vehicle.setCostHourly(7.0);
+            vehicle.setCostUsage(30.0);
+            vehicle.setDischargeSpeed(DISCHARGE_SPEED);
+            vehicle.setMaxCharge(MAX_CHARGE);
+            vehicle.setMaxChargePower(2.0);
+            vehicle.setOperationStartingTime(0l);
+            vehicle.setOperationEndingTime(3600 * 8l);
+            vehicle.setPriceEnergyDepot(1.0);
+            vehicle.setServiceDurationAtFinish(60 * 10l);
+            vehicle.setServiceDurationAtStart(60 * 5l);
+        }
+        for (int i = 1; i <= SCALE; i++) {
+            Customer customer1 = new Customer();
+            customer1.setName("Customer-"+i);
+            problem.getVisitList().add(customer1);
+            Location loc1 = new Location(ID, LOWER_RIGHT_COORD_LAT + (UPPER_LEFT_COORD_LAT - LOWER_RIGHT_COORD_LAT) * random.nextDouble(),
+                    UPPER_LEFT_COORD_LON + (LOWER_RIGHT_COORD_LON - UPPER_LEFT_COORD_LON) * random.nextDouble());
+            ID++;
+            problem.getLocationList().add(loc1);
+            customer1.setLocation(loc1);
+            customer1.setServiceDuration(60 * 15l);
+            customer1.setStartTime(random.nextLong(3) * 3600);
+            customer1.setEndTime(customer1.getStartTime() + 3600 * 6l);
+        }
+
+        for (int i = 1; i <= numberOfVehicles; i++) {
+            Location locCS = new Location(ID, LOWER_RIGHT_COORD_LAT + (UPPER_LEFT_COORD_LAT - LOWER_RIGHT_COORD_LAT) * random.nextDouble(),
+                    UPPER_LEFT_COORD_LON + (LOWER_RIGHT_COORD_LON - UPPER_LEFT_COORD_LON) * random.nextDouble());
+            ID++;
+            problem.getLocationList().add(locCS);
+            ChargingStation chargingStation = new ChargingStation();
+            chargingStation.setName("Charging Station-"+i);
+            chargingStation.setLocation(locCS);
+            chargingStation.setStartTime(0l);
+            chargingStation.setEndTime(3600 * 8l);
+            chargingStation.setChargingPower(3.0);
+            chargingStation.setPriceEnergy(1.5);
+            chargingStation.setNumberOfSlots(2);
+            problem.getVisitList().add(chargingStation);
+        }
+
+        return problem;
+    }
     private static void generateData() {
-        EVRPsolution problem1 = generateExample(100);
+        EVRPsolution problem1 = generateRealExample(25);
         /*EVRPsolution problem2 = generateExample(25);
         EVRPsolution problem3 = generateExample(40);
         EVRPsolution problem4 = generateExample(49);
         EVRPsolution problem5 = generateExample(50);*/
 
         JsonIO jsonIO = new JsonIO();
-        jsonIO.write(problem1, new File("data/problem_100.json"));
+        jsonIO.write(problem1, new File("data/realy_bad_problem_25.json"));
         // Check if we can read what we have written
         /*jsonIO.read(new File("data/problem_10.json"));
         jsonIO.write(problem2, new File("data/problem_25.json"));

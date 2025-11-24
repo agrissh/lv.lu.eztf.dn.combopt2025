@@ -5,6 +5,7 @@ import ai.timefold.solver.core.api.domain.variable.PlanningListVariable;
 import ai.timefold.solver.core.api.domain.variable.ShadowSources;
 import ai.timefold.solver.core.api.domain.variable.ShadowVariable;
 import com.fasterxml.jackson.annotation.*;
+import com.graphhopper.util.shapes.GHPoint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -59,9 +60,19 @@ public class Vehicle {
                     prevLoc.distanceTo(visit.getLocation());
             prevLoc = visit.getLocation();
         }
-        totalDistance = totalDistance +
+        if (!prevLoc.equals(this.getDepot())) totalDistance = totalDistance +
                 prevLoc.distanceTo(this.getDepot());
+
         return totalDistance;
+    }
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    public List<GHPoint> getPathToFirst() {
+        if (this.getVisits().size() == 0) {
+            return null;
+        } else {
+            return this.getDepot().pathTo(this.getVisits().get(0).getLocation());
+        }
     }
     @JsonIgnore
     public Boolean isBatteryEmpty() {

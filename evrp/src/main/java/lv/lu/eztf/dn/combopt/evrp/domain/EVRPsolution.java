@@ -30,7 +30,7 @@ public class EVRPsolution {
     List<Vehicle> vehicleList = new ArrayList<>();
     @ValueRangeProvider
     @PlanningEntityCollectionProperty
-    @JsonIdentityReference(alwaysAsId = true)
+    @JsonIdentityReference(alwaysAsId = false)
     List<Visit> visitList = new ArrayList<>();
     @ProblemFactCollectionProperty
     List<Location> locationList = new ArrayList<>();

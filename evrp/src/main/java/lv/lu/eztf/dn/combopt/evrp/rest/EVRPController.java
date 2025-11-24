@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import lv.lu.eztf.dn.combopt.evrp.domain.EVRPsolution;
+import lv.lu.eztf.dn.combopt.evrp.domain.Router;
 import lv.lu.eztf.dn.combopt.evrp.solver.SimpleIndictmentObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,6 +37,8 @@ public class EVRPController {
     private final SolverManager<EVRPsolution, String> solverManager;
     private final SolutionManager<EVRPsolution, HardSoftScore> solutionManager;
     private final ConcurrentMap<String, Job> jobIdToJob = new ConcurrentHashMap<>();
+
+    private Router ghRouter = Router.getDefaultRouterInstance();
 
     public EVRPController(SolverManager<EVRPsolution, String> solverManager,
                           SolutionManager<EVRPsolution, HardSoftScore> solutionManager) {
@@ -61,6 +64,7 @@ public class EVRPController {
                             schema = @Schema(implementation = String.class))) })
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
     public String solve(@RequestBody EVRPsolution problem) {
+        ghRouter.setDistanceTimeMap(problem.getLocationList());
         String jobId = UUID.randomUUID().toString();
         jobIdToJob.put(jobId, Job.ofEVRPsolution(problem));
         solverManager.solveBuilder()

@@ -3,10 +3,13 @@ package lv.lu.eztf.dn.combopt.evrp.domain;
 import ai.timefold.solver.core.api.domain.entity.PlanningEntity;
 import ai.timefold.solver.core.api.domain.variable.*;
 import com.fasterxml.jackson.annotation.*;
+import com.graphhopper.util.shapes.GHPoint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @PlanningEntity
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
@@ -84,6 +87,18 @@ public abstract class  Visit {
                 : null;
     }
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    public List<GHPoint> getPathToNext() {
+        if (this.getNext() == null) {
+            if (this.getVehicle() == null) {
+                return null;
+            } else {
+                return this.getLocation().pathTo(this.getVehicle().getDepot());
+            }
+        } else {
+            return this.getLocation().pathTo(this.getNext().getLocation());
+        }
+    }
     @Override
     public String toString() {
         return this.getName();
