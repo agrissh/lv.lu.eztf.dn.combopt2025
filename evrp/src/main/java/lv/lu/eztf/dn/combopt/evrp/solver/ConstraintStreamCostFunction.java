@@ -6,6 +6,7 @@ import ai.timefold.solver.core.api.score.stream.ConstraintCollectors;
 import ai.timefold.solver.core.api.score.stream.ConstraintFactory;
 import ai.timefold.solver.core.api.score.stream.ConstraintProvider;
 import lv.lu.eztf.dn.combopt.evrp.domain.ChargingStation;
+import lv.lu.eztf.dn.combopt.evrp.domain.Customer;
 import lv.lu.eztf.dn.combopt.evrp.domain.Vehicle;
 import lv.lu.eztf.dn.combopt.evrp.domain.Visit;
 import org.jspecify.annotations.NonNull;
@@ -27,7 +28,9 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
                 costVehicleTime(constraintFactory),
                 costInitialEnergy(constraintFactory),
                 costRechargedEnergy(constraintFactory),
-                rewardLeftover(constraintFactory)
+                rewardLeftover(constraintFactory),
+                unvisitedCustomer(constraintFactory),
+                unnecessaryCharging(constraintFactory)
         };
     }
     public Constraint penalizeEveryVisit(ConstraintFactory constraintFactory) {
@@ -140,6 +143,22 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
                 .reward(HardSoftScore.ONE_SOFT,(vehicle, maxStationPrice, lastVisit) -> (int) Math.round(Math.max(vehicle.getPriceEnergyDepot(), maxStationPrice) * 100 *
                                 Math.max(0, lastVisit.getVehicleChargeAfterVisit() - lastVisit.getLocation().distanceTo(vehicle.getDepot()) * vehicle.getDischargeSpeed())))
                 .asConstraint("Leftover reward");
+    }
+
+    public Constraint unvisitedCustomer(ConstraintFactory constraintFactory) {
+        return constraintFactory
+                .forEachIncludingUnassigned(Customer.class)
+                .filter(customer -> customer.getVehicle() == null)
+                .penalize(HardSoftScore.ONE_HARD, customer -> 1000)
+                .asConstraint("Unvisited Customer");
+    }
+
+    public Constraint unnecessaryCharging(ConstraintFactory constraintFactory) {
+        return constraintFactory
+                .forEach(ChargingStation.class)
+                .filter(station -> station.getVehicleCharge() > 0.7 * station.getVehicle().getMaxCharge())
+                .penalize(HardSoftScore.ONE_HARD)
+                .asConstraint("Unnecessary Charging");
     }
 }
 

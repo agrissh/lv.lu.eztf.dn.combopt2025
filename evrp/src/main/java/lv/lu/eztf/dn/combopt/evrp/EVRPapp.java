@@ -293,6 +293,8 @@ public class EVRPapp {
         Integer numberOfVehicles = SCALE / 20 + 1;
         Double MAX_CHARGE = 25.0;
         Double DISCHARGE_SPEED = 1.0;
+        Integer CHARGING_STATION_COUNT = numberOfVehicles * 3;
+        Integer CHARGING_STATION_REPLICAS_COUNT = numberOfVehicles;
         for (int i = 1; i <= numberOfVehicles; i++) {
             Vehicle vehicle = new Vehicle();
             vehicle.setRegNr("vehicle-"+i);
@@ -331,7 +333,7 @@ public class EVRPapp {
             customer1.setEndTime(customer1.getStartTime() + 3600 * 6l);
         }
 
-        for (int i = 1; i <= numberOfVehicles; i++) {
+        for (int i = 1; i <= CHARGING_STATION_COUNT; i++) {
             Location locCS = new Location(ID, LOWER_RIGHT_COORD_LAT + (UPPER_LEFT_COORD_LAT - LOWER_RIGHT_COORD_LAT) * random.nextDouble(),
                     UPPER_LEFT_COORD_LON + (LOWER_RIGHT_COORD_LON - UPPER_LEFT_COORD_LON) * random.nextDouble());
             ID++;
@@ -357,7 +359,7 @@ public class EVRPapp {
         EVRPsolution problem5 = generateExample(50);*/
 
         JsonIO jsonIO = new JsonIO();
-        jsonIO.write(problem1, new File("data/realy_bad_problem_25.json"));
+        jsonIO.write(problem1, new File("data/real_manyCS_problem_25.json"));
         // Check if we can read what we have written
         /*jsonIO.read(new File("data/problem_10.json"));
         jsonIO.write(problem2, new File("data/problem_25.json"));

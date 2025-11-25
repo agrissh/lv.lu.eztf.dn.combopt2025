@@ -34,7 +34,7 @@ public class Vehicle {
     Double costUsage; // euro
     Double costHourly; // euro / hour
     Double priceEnergyDepot; // euro / KWh
-    @PlanningListVariable
+    @PlanningListVariable(allowsUnassignedValues = true)
     List<Visit> visits = new ArrayList<>();
     @ShadowVariable(supplierName = "lastSupplier")
     @JsonIdentityReference(alwaysAsId = true)
