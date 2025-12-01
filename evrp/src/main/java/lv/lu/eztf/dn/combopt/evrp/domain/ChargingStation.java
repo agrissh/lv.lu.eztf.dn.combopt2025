@@ -1,16 +1,19 @@
 package lv.lu.eztf.dn.combopt.evrp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter @Setter @NoArgsConstructor
 public class ChargingStation extends Visit {
     Double chargingPower; // kWh / hour
     Integer numberOfSlots;
     Double priceEnergy; // euro / KWh
-
+    @JsonIdentityReference(alwaysAsId = true)
+    MultiSlotCS parent;
     public ChargingStation(Location location,
                            Long startTime,
                            Long endTime,
@@ -22,11 +25,13 @@ public class ChargingStation extends Visit {
                            Double vehicleCharge,
                            Double chargingPower,
                            Integer numberOfSlots,
-                           Double priceEnergy)  {
+                           Double priceEnergy,
+                           MultiSlotCS parent)  {
         super(location, startTime, endTime, name, vehicle, previous, next, arrivalTime, vehicleCharge);
         this.chargingPower = chargingPower;
         this.numberOfSlots = numberOfSlots;
         this.priceEnergy = priceEnergy;
+        this.parent = parent;
     }
 
     @Override
@@ -34,8 +39,9 @@ public class ChargingStation extends Visit {
         Vehicle car = this.getVehicle();
         // TODO: wait time for a free slot
         // calculate charging time
-        return car != null ?
-                (long) (((car.getMaxCharge() - car.getCharge()) / Math.min(this.chargingPower, car.getMaxChargePower())) * 3600)
+        //log.info(this.getVehicleCharge().toString());
+        return car != null && this.getVehicleCharge() != null ?
+                (long) (((car.getMaxCharge() - this.getVehicleCharge()) / Math.min(this.chargingPower, car.getMaxChargePower())) * 3600)
                 : null;
     }
 

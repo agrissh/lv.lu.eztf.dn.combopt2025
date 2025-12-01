@@ -289,12 +289,12 @@ public class EVRPapp {
         Double UPPER_LEFT_COORD_LON = 24.0309;
         Double LOWER_RIGHT_COORD_LAT = 56.8884;
         Double LOWER_RIGHT_COORD_LON = 24.2520;
-        Integer DEPOT_SIZE = 1;
-        Integer numberOfVehicles = SCALE / 20 + 1;
-        Double MAX_CHARGE = 25.0;
+        Integer DEPOT_SIZE = 4;
+        Integer numberOfVehicles = 4;
+        Double MAX_CHARGE = 50.0;
         Double DISCHARGE_SPEED = 1.0;
-        Integer CHARGING_STATION_COUNT = numberOfVehicles * 3;
-        Integer CHARGING_STATION_REPLICAS_COUNT = numberOfVehicles;
+        Integer CHARGING_STATION_COUNT = 1;
+        Integer CHARGING_STATION_REPLICAS_COUNT = numberOfVehicles * 5;
         for (int i = 1; i <= numberOfVehicles; i++) {
             Vehicle vehicle = new Vehicle();
             vehicle.setRegNr("vehicle-"+i);
@@ -304,6 +304,10 @@ public class EVRPapp {
                 depot =  new Location(ID, LOWER_RIGHT_COORD_LAT + (UPPER_LEFT_COORD_LAT - LOWER_RIGHT_COORD_LAT) * random.nextDouble(),
                         UPPER_LEFT_COORD_LON + (LOWER_RIGHT_COORD_LON - UPPER_LEFT_COORD_LON) * random.nextDouble());
                 ID++;
+                // "lat" : 56.95312018987494,
+                //    "lon" : 24.115315029410378
+                depot.setLat(56.95312018987494);
+                depot.setLon(24.115315029410378);
                 problem.getLocationList().add(depot);
             }
             vehicle.setDepot(depot);
@@ -312,11 +316,11 @@ public class EVRPapp {
             vehicle.setCostUsage(30.0);
             vehicle.setDischargeSpeed(DISCHARGE_SPEED);
             vehicle.setMaxCharge(MAX_CHARGE);
-            vehicle.setMaxChargePower(2.0);
+            vehicle.setMaxChargePower(50.0);
             vehicle.setOperationStartingTime(0l);
-            vehicle.setOperationEndingTime(3600 * 8l);
+            vehicle.setOperationEndingTime(3600 * 12l);
             vehicle.setPriceEnergyDepot(1.0);
-            vehicle.setServiceDurationAtFinish(60 * 10l);
+            vehicle.setServiceDurationAtFinish(60 * 5l);
             vehicle.setServiceDurationAtStart(60 * 5l);
         }
         for (int i = 1; i <= SCALE; i++) {
@@ -328,41 +332,51 @@ public class EVRPapp {
             ID++;
             problem.getLocationList().add(loc1);
             customer1.setLocation(loc1);
-            customer1.setServiceDuration(60 * 15l);
-            customer1.setStartTime(random.nextLong(3) * 3600);
-            customer1.setEndTime(customer1.getStartTime() + 3600 * 6l);
+            customer1.setServiceDuration(60 * 1l);
+            customer1.setStartTime(0l * 3600);
+            customer1.setEndTime(customer1.getStartTime() + 3600 * 24l);
         }
 
         for (int i = 1; i <= CHARGING_STATION_COUNT; i++) {
+
             Location locCS = new Location(ID, LOWER_RIGHT_COORD_LAT + (UPPER_LEFT_COORD_LAT - LOWER_RIGHT_COORD_LAT) * random.nextDouble(),
                     UPPER_LEFT_COORD_LON + (LOWER_RIGHT_COORD_LON - UPPER_LEFT_COORD_LON) * random.nextDouble());
             ID++;
             problem.getLocationList().add(locCS);
-            ChargingStation chargingStation = new ChargingStation();
-            chargingStation.setName("Charging Station-"+i);
-            chargingStation.setLocation(locCS);
-            chargingStation.setStartTime(0l);
-            chargingStation.setEndTime(3600 * 8l);
-            chargingStation.setChargingPower(3.0);
-            chargingStation.setPriceEnergy(1.5);
-            chargingStation.setNumberOfSlots(2);
-            problem.getVisitList().add(chargingStation);
+            // "lat" : 56.95212018987494,
+            //    "lon" : 24.114315029410378
+            locCS.setLat(56.95212018987494);locCS.setLon(24.114315029410378);
+            MultiSlotCS mCS = new MultiSlotCS(ID, locCS, 50.0, 1, 1.5);
+            ID++;
+            problem.getCsList().add(mCS);
+            for (int j = 1; j<= CHARGING_STATION_REPLICAS_COUNT; j++) {
+                ChargingStation chargingStation = new ChargingStation();
+                chargingStation.setName("Charging Station-"+i+"-"+j);
+                chargingStation.setLocation(mCS.getLocation());
+                chargingStation.setStartTime(0l);
+                chargingStation.setEndTime(3600 * 8l);
+                chargingStation.setChargingPower(mCS.getChargingPower());
+                chargingStation.setPriceEnergy(mCS.getPriceEnergy());
+                chargingStation.setNumberOfSlots(mCS.getNumberOfSlots());
+                chargingStation.setParent(mCS);
+                problem.getVisitList().add(chargingStation);
+            }
         }
 
         return problem;
     }
     private static void generateData() {
-        EVRPsolution problem1 = generateRealExample(25);
+        EVRPsolution problem1 = generateRealExample(200);
         /*EVRPsolution problem2 = generateExample(25);
         EVRPsolution problem3 = generateExample(40);
         EVRPsolution problem4 = generateExample(49);
         EVRPsolution problem5 = generateExample(50);*/
 
         JsonIO jsonIO = new JsonIO();
-        jsonIO.write(problem1, new File("data/real_manyCS_problem_25.json"));
+        jsonIO.write(problem1, new File("data/real_slots_problem_200.json"));
         // Check if we can read what we have written
-        /*jsonIO.read(new File("data/problem_10.json"));
-        jsonIO.write(problem2, new File("data/problem_25.json"));
+        EVRPsolution test = jsonIO.read(new File("data/real_slots_problem_200.json"));
+        /*jsonIO.write(problem2, new File("data/problem_25.json"));
         jsonIO.write(problem3, new File("data/problem_40.json"));
         jsonIO.write(problem4, new File("data/problem_49.json"));
         jsonIO.write(problem5, new File("data/problem_50.json"));*/

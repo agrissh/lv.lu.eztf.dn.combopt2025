@@ -5,11 +5,17 @@ import ai.timefold.solver.core.api.score.stream.Constraint;
 import ai.timefold.solver.core.api.score.stream.ConstraintCollectors;
 import ai.timefold.solver.core.api.score.stream.ConstraintFactory;
 import ai.timefold.solver.core.api.score.stream.ConstraintProvider;
+import ai.timefold.solver.core.api.score.stream.common.ConnectedRangeChain;
 import lv.lu.eztf.dn.combopt.evrp.domain.ChargingStation;
 import lv.lu.eztf.dn.combopt.evrp.domain.Customer;
 import lv.lu.eztf.dn.combopt.evrp.domain.Vehicle;
 import lv.lu.eztf.dn.combopt.evrp.domain.Visit;
 import org.jspecify.annotations.NonNull;
+
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static ai.timefold.solver.core.api.score.stream.Joiners.equal;
 
@@ -30,7 +36,8 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
                 costRechargedEnergy(constraintFactory),
                 rewardLeftover(constraintFactory),
                 unvisitedCustomer(constraintFactory),
-                unnecessaryCharging(constraintFactory)
+                unnecessaryCharging(constraintFactory),
+                simultanCharging(constraintFactory),
         };
     }
     public Constraint penalizeEveryVisit(ConstraintFactory constraintFactory) {
@@ -137,7 +144,7 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
         return constraintFactory
                 .forEach(ChargingStation.class)
                 .groupBy(ChargingStation::getVehicle, ConstraintCollectors.max(ChargingStation::getPriceEnergy))
-                // TODO: expand with cars without charging stations!
+                .complement(Vehicle.class, Vehicle::getPriceEnergyDepot)
                 .join(Visit.class, equal((v,p)->v, Visit::getVehicle))
                 .filter((vehicle, price, visit) -> visit.getNext() == null)
                 .reward(HardSoftScore.ONE_SOFT,(vehicle, maxStationPrice, lastVisit) -> (int) Math.round(Math.max(vehicle.getPriceEnergyDepot(), maxStationPrice) * 100 *
@@ -159,6 +166,22 @@ public class ConstraintStreamCostFunction implements ConstraintProvider {
                 .filter(station -> station.getVehicleCharge() > 0.7 * station.getVehicle().getMaxCharge())
                 .penalize(HardSoftScore.ONE_HARD)
                 .asConstraint("Unnecessary Charging");
+    }
+
+    public Constraint simultanCharging(ConstraintFactory constraintFactory) {
+        return constraintFactory
+                .forEach(ChargingStation.class)
+                .groupBy(ChargingStation::getParent,
+                        ConstraintCollectors.toConnectedRanges(
+                                ChargingStation::getArrivalTime,
+                                ChargingStation::getDepartureTime
+                        ))
+                .flattenLast(ConnectedRangeChain::getConnectedRanges)
+                .filter((cs, connectedRange) -> connectedRange.getMaximumOverlap() > cs.getNumberOfSlots())
+                .penalize(HardSoftScore.ONE_HARD, (cs, connectedRange) -> connectedRange.getContainedRangeCount())
+                .indictWith((mCs, range) -> StreamSupport.stream(Spliterators.spliteratorUnknownSize(
+                        range.iterator(), Spliterator.ORDERED),false).collect(Collectors.toList()))
+                .asConstraint("Fighting for the Slot in the CS");
     }
 }
 

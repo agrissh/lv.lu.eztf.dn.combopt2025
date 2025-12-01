@@ -80,7 +80,7 @@ function renderRoutes(solution, indictments) {
             vehicle_div.append($('<a data-toggle="popover" data-bs-html="true" data-bs-content="'+
                 'works from ' + formatTime(visit.startTime) + " to " + formatTime(visit.endTime) +
                 '<br>arrives at ' + formatTime(visit.arrivalTime) + ", departs at " + formatTime(visit.departureTime) +
-                '<br>service duration is ' + formatTime(visit.serviceDuration) +
+                '<br>service duration is ' + formatTime(visit.visitTime) +
                 '<br>charge arriving = ' + visit.vehicleCharge +
                 '<br>charge leaving  = ' + visit.vehicleChargeAfterVisit +
                 '<hr>' +

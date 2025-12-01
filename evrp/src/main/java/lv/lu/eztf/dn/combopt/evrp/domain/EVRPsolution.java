@@ -34,4 +34,6 @@ public class EVRPsolution {
     List<Visit> visitList = new ArrayList<>();
     @ProblemFactCollectionProperty
     List<Location> locationList = new ArrayList<>();
+    @ProblemFactCollectionProperty
+    List<MultiSlotCS> csList = new ArrayList<>();
 }

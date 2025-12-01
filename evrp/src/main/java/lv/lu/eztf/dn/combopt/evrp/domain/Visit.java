@@ -22,10 +22,10 @@ import java.util.List;
 public abstract class  Visit {
 
     @JsonIdentityReference(alwaysAsId = true)
-    Location location;
+    Location location; //determines the same physical place, e.g., the same CS
     Long startTime; // second of a day
     Long endTime; // second of a day
-    String name;
+    String name; // identifies visit (not the CS or Customer)
 
     @InverseRelationShadowVariable(sourceVariableName = "visits")
     @JsonIdentityReference(alwaysAsId = true)
